@@ -1,5 +1,7 @@
 package Logic;
 
+import Logic.Boards.ChessBoard;
+
 public class Coordinate {
 
 
@@ -31,6 +33,18 @@ public class Coordinate {
         boolean returnBoolean = false;
         if (this.xCoordinate == c.getCoordinateX() && this.yCoordinate == c.getCoordinateY()){
             returnBoolean = true;
+        }
+        return returnBoolean;
+    }
+
+    public boolean isValidCoordinate(ChessBoard board){
+        boolean returnBoolean = true;
+        System.out.println(board.getSquares().length);
+        if (xCoordinate < 0 || xCoordinate > board.getSquares().length-1){
+            returnBoolean = false;
+        }
+        if (yCoordinate < 0 || yCoordinate > board.getSquares().length-1){
+            returnBoolean = false;
         }
         return returnBoolean;
     }

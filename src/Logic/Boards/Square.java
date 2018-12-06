@@ -9,7 +9,7 @@ public class Square {
     private Color color;
     private double width;
     private double height;
-    private double PositionX; //TODO might be more sensible to use doubles
+    private double PositionX;
     private double PositionY;
     private Coordinate coordinate;
     private GamePiece gamePiece;
@@ -74,5 +74,12 @@ public class Square {
 
     public Coordinate getCoordinate() {
         return coordinate;
+    }
+
+    public void logInfo(){
+        System.out.println("coordinate = x:" + coordinate.getCoordinateX()+" y:"+coordinate.getCoordinateY());
+        if (gamePiece != null) {
+            System.out.println("gamePiece = " + gamePiece.getFaction() + " " + getGamePiece().getUnitType());
+        }
     }
 }

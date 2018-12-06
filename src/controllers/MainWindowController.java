@@ -3,16 +3,23 @@ package controllers;
 
 import Logic.Boards.ChessBoard;
 import Logic.Boards.Square;
-import Logic.Pieces.Faction;
+import Logic.Coordinate;
+import Logic.Games.Game;
+import Logic.Games.HotSeatGame;
 import Logic.Pieces.GamePiece;
-import Logic.Pieces.King;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
+
+import java.util.ArrayList;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 
 public class MainWindowController {
@@ -25,8 +32,13 @@ public class MainWindowController {
     private Canvas piecesLayer;
     @FXML
     private StackPane stackPaneGameArea;
+    @FXML
+    private Label infoLabel;
 
-    private ChessBoard board; //TODO change to Game
+    private Lock continueLock = new ReentrantLock();
+    private Condition continueCondition = continueLock.newCondition();
+    private Game game;
+
 
     public void initialize() { //TODO Research who is invoking this
         stackPaneGameArea.widthProperty().addListener(event -> updateGUI());
@@ -34,17 +46,18 @@ public class MainWindowController {
     }
 
     public void updateGUI() {
-        if (board != null) {
-            board.resizeSquares();
+        if (game != null) {
+            game.getChessBoard().resizeSquares();
             drawBoard();
             drawPieces();
+            drawHelp();
         }
     }
 
     private void drawBoard() {
-        if (board != null) {
+        if (game != null) {
 
-            Square[][] squares = board.getSquares();
+            Square[][] squares = game.getChessBoard().getSquares();
             GraphicsContext gc = boardLayer.getGraphicsContext2D();
 
             for (Square[] square : squares) {
@@ -61,8 +74,8 @@ public class MainWindowController {
     }
 
     private void drawPieces() {
-        if (board != null) {
-            Square[][] squares = board.getSquares();
+        if (game != null) {
+            Square[][] squares = game.getChessBoard().getSquares();
             GraphicsContext gc = piecesLayer.getGraphicsContext2D();
             gc.clearRect(0, 0, piecesLayer.getWidth(), piecesLayer.getHeight());
             for (Square[] square : squares) {
@@ -76,40 +89,88 @@ public class MainWindowController {
 
                         Image image = new Image(String.valueOf(gamePiece.getImageURL()));
                         gc.drawImage(image, xPosition, yPosition, width, height);
+
                     }
                 }
             }
         }
     }
 
+    private void drawHelp() {
+        if (game != null) {
+            GraphicsContext gc = helpLayer.getGraphicsContext2D();
+            gc.clearRect(0, 0, helpLayer.getWidth(), helpLayer.getHeight());
+            if (game.getCurrentSelection() != null) {
+                GamePiece currentGamePiece = game.getCurrentSelection().getGamePiece();
+                Coordinate currentCoordinate = game.getCurrentSelection().getCoordinate();
+                ChessBoard board = game.getChessBoard();
+                ArrayList<Coordinate> validMoves = currentGamePiece.getValidMoves(board, currentCoordinate);
+                Square[][] squares = board.getSquares();
+                for (Square[] square : squares) {
+                    for (Square s : square) {
+                        if (validMoves.contains(s.getCoordinate())) {
+
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
     @FXML
     public void testRun(ActionEvent event) {
-        board = new ChessBoard(boardLayer);
-        drawBoard();
-        Square[][] squares = board.getSquares();
-        GamePiece testPiece = new King(Faction.WHITE);
-        squares[1][1].setGamePiece(testPiece);
-        drawPieces();
+        if (game != null) {
+            game.setTerminated(true);
+        }
+        HotSeatGame hotSeatGame = new HotSeatGame(this);
+        this.game = hotSeatGame;
+        Thread th = new Thread(hotSeatGame);
+        th.start();
+        updateGUI();
     }
 
     @FXML
     public void handleMouseClick(MouseEvent mouseEvent) {
-        if (board == null) {
+        if (game == null) {
             return;
         }
-        System.out.println("Mouseclick detected");
         double x = mouseEvent.getX();
         double y = mouseEvent.getY();
-        Square[][] squares = board.getSquares();
-        for (Square[] square : squares) {
-            for (Square s : square) {
-                if (s.getPositionX() <= x && s.getPositionX() + s.getWidth() >= x &&
-                        s.getPositionY() <= y && s.getPositionY() + s.getHeight() >= y) {
-                    System.out.println(s.getCoordinate().getCoordinateX());
-                    System.out.println(s.getCoordinate().getCoordinateY());
+        Square clickedSquare = game.getChessBoard().getSquare(x, y);
+
+        clickedSquare.logInfo();
+
+        boolean workDone = false;
+        while (!workDone) {
+            if (continueLock.tryLock()) {
+                try {
+                    game.processUserInput(clickedSquare);
+                    continueCondition.signalAll();
+                } finally {
+                    continueLock.unlock();
+                    workDone = true;
                 }
             }
         }
+
+    }
+
+
+    public Canvas getBoardLayer() {
+        return boardLayer;
+    }
+
+    public Lock getContinueLock() {
+        return continueLock;
+    }
+
+    public Condition getContinueCondition() {
+        return continueCondition;
+    }
+
+    public void setInfoLabel(String text) {
+        infoLabel.setText(text);
     }
 }
 

@@ -36,4 +36,7 @@
          </children>
       </StackPane>
    </center>
+   <bottom>
+      <Label fx:id="infoLabel" text="Welcome to the chess Game!" BorderPane.alignment="CENTER" />
+   </bottom>
 </BorderPane>

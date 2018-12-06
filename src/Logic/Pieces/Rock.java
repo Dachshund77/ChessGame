@@ -5,13 +5,13 @@ import Logic.Coordinate;
 
 import java.util.ArrayList;
 
-public class King extends GamePiece{
+public class Rock extends GamePiece {
 
-    private static final UnitType UNIT_TYPE = UnitType.KING;
+    private static final UnitType UNIT_TYPE = UnitType.ROCK;
     private boolean hasMoved = false;
 
-    public King(Faction faction){
-        super(faction,UNIT_TYPE);
+    public Rock(Faction faction) {
+        super(faction, UNIT_TYPE);
     }
 
     @Override
@@ -22,6 +22,7 @@ public class King extends GamePiece{
     public boolean hasMoved() {
         return hasMoved;
     }
+
     public void setHasMoved(boolean hasMoved) {
         this.hasMoved = hasMoved;
     }
