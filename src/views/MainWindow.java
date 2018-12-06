@@ -11,7 +11,7 @@ public class MainWindow extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("../fxmls/MainWindowFXML.fxml"));
-        primaryStage.setTitle("DrawingDemo");
+        primaryStage.setTitle("Chess");
         primaryStage.setScene(new Scene(root, 500, 500));
         primaryStage.show();
     }
