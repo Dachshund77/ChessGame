@@ -25,8 +25,8 @@ public class MainWindowController {
         for (Square[] square : squares) {
             for (Square s : square) {
                 gc.setFill(s.getColor());
-                double xPosition = s.getxPosition();
-                double yPosition = s.getyPosition();
+                double xPosition = s.getPositionX();
+                double yPosition = s.getPositionY();
                 double width = s.getWidth();
                 double height = s.getHeight();
                 gc.fillRect(xPosition, yPosition, width, height);
@@ -47,10 +47,10 @@ public class MainWindowController {
         Square[][] squares = board.getSquares();
         for (Square[] square : squares) {
             for (Square s : square) {
-                if (s.getxPosition() <= x && s.getxPosition()+s.getWidth() >= x &&
-                        s.getyPosition() <= y && s.getyPosition()+s.getHeight() >= y) {
-                    System.out.println("x: "+s.getxCoordinate());
-                    System.out.println("y: "+s.getyCoordinate());
+                if (s.getPositionX() <= x && s.getPositionX()+s.getWidth() >= x &&
+                        s.getPositionY() <= y && s.getPositionY()+s.getHeight() >= y) {
+                    System.out.println(s.getCoordinate().getCoordinateX());
+                    System.out.println(s.getCoordinate().getCoordinateY());
                 }
             }
         }

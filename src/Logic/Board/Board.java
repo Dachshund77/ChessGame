@@ -10,7 +10,7 @@ public class Board {
         squares = initializeSquares(boardLayer);
     }
 
-    private Square[][] initializeSquares(Canvas boardLayer) { //TODO I wonder where the draw code should be placed, controller or Logic.Board.Board?
+    private Square[][] initializeSquares(Canvas boardLayer) { //TODO I wonder where the draw code should be placed, controller or Board?
         Square[][] returnArray = new Square[8][8]; //We define [x][y] axis
         int height = (int)boardLayer.getHeight()/8;
         int width = (int)boardLayer.getWidth()/8;
