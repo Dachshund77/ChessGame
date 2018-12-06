@@ -1,4 +1,4 @@
-package Logic;
+package Logic.Board;
 
 import javafx.scene.paint.Color;
 
@@ -41,5 +41,13 @@ public class Square {
 
     public int getyPosition() {
         return yPosition;
+    }
+
+    public int getxCoordinate() {
+        return xCoordinate;
+    }
+
+    public int getyCoordinate() {
+        return yCoordinate;
     }
 }

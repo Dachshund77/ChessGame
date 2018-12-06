@@ -9,13 +9,13 @@ import javafx.stage.Stage;
 public class MainWindow extends Application {
 
     @Override
-    public void start(Stage primaryStage) throws Exception{
+    public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("../fxmls/MainWindowFXML.fxml"));
+
         primaryStage.setTitle("Chess");
         primaryStage.setScene(new Scene(root, 500, 500));
         primaryStage.show();
     }
-
 
     public static void main(String[] args) {
         launch(args);
