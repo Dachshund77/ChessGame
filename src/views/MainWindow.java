@@ -16,15 +16,19 @@ public class MainWindow extends Application {
 
         Scene scene = new Scene(root);
 
+        StackPane stackPaneRoot = (StackPane) scene.lookup("#stackPaneGameArea");
 
-
-        StackPane stackPaneRoot = (StackPane)root.getChildrenUnmodifiable().get(1); //TODO not a stable line of code
-        System.out.println(stackPaneRoot);
-        Canvas boardLayer = (Canvas) stackPaneRoot.getChildren().get(0);
-        System.out.println(boardLayer);
-
+        Canvas boardLayer = (Canvas) scene.lookup("#boardLayer");
         boardLayer.widthProperty().bind(stackPaneRoot.widthProperty());
         boardLayer.heightProperty().bind(stackPaneRoot.heightProperty());
+
+        Canvas helpLayer = (Canvas) scene.lookup("#helpLayer");
+        helpLayer.widthProperty().bind(stackPaneRoot.widthProperty());
+        helpLayer.heightProperty().bind(stackPaneRoot.heightProperty());
+
+        Canvas piecesLayer = (Canvas) scene.lookup("#piecesLayer");
+        piecesLayer.widthProperty().bind(stackPaneRoot.widthProperty());
+        piecesLayer.heightProperty().bind(stackPaneRoot.heightProperty());
 
         primaryStage.setTitle("Chess");
         primaryStage.setScene(scene);

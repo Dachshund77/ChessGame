@@ -1,6 +1,7 @@
-package Logic.Board;
+package Logic.Boards;
 
 import Logic.Coordinate;
+import Logic.Pieces.GamePiece;
 import javafx.scene.paint.Color;
 
 public class Square {
@@ -11,7 +12,7 @@ public class Square {
     private double PositionX; //TODO might be more sensible to use doubles
     private double PositionY;
     private Coordinate coordinate;
-    //private GamePiece gamePiece;
+    private GamePiece gamePiece;
 
     public Square(Color color, double width, double height, double xPosition, double yPosition,int xCoordinate, int yCoordinate) {
         this.color = color;
@@ -20,6 +21,7 @@ public class Square {
         this.PositionX = xPosition;
         this.PositionY = yPosition;
         this.coordinate = new Coordinate(xCoordinate,yCoordinate);
+        this.gamePiece = null;
     }
 
     public Color getColor() {
@@ -42,20 +44,32 @@ public class Square {
         return PositionY;
     }
 
-    public void setWidth(int width) {
+    public void setWidth(double width) {
         this.width = width;
     }
 
-    public void setHeight(int height) {
+    public void setHeight(double height) {
         this.height = height;
     }
 
-    public void setPositionX(int PositionX) {
+    public void setPositionX(double PositionX) {
         this.PositionX = PositionX;
     }
 
-    public void setPositionY(int PositionY) {
+    public void setPositionY(double PositionY) {
         this.PositionY = PositionY;
+    }
+
+    public GamePiece getGamePiece() {
+        return gamePiece;
+    }
+
+    public void setGamePiece(GamePiece gamePiece) {
+        this.gamePiece = gamePiece;
+    }
+
+    public void removeGamePiece(){
+        this.gamePiece = null;
     }
 
     public Coordinate getCoordinate() {

@@ -31,6 +31,8 @@
       <StackPane fx:id="stackPaneGameArea" minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
             <Canvas fx:id="boardLayer" height="200.0" onMouseClicked="#handleMouseClick" width="200.0" />
+            <Canvas fx:id="helpLayer" height="200.0" mouseTransparent="true" width="200.0" />
+            <Canvas fx:id="piecesLayer" height="200.0" mouseTransparent="true" width="200.0" />
          </children>
       </StackPane>
    </center>

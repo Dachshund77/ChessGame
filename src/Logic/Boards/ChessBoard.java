@@ -1,20 +1,20 @@
-package Logic.Board;
+package Logic.Boards;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.paint.Color;
 
-public class Board {
+public class ChessBoard {
     private Canvas displayCanvas;
     private Square[][] squares;
 
-    public Board(Canvas displayCanvas) {
+    public ChessBoard(Canvas displayCanvas) { //TODO we dont actually need the canvas reference here
         this.displayCanvas = displayCanvas;
         squares = initializeSquares();
     }
 
     public void resizeSquares() {
-        int height = (int) displayCanvas.getHeight() / 8;
-        int width = (int) displayCanvas.getWidth() / 8;
+        double height = displayCanvas.getHeight() / 8;
+        double width =  displayCanvas.getWidth() / 8;
         for (int i = 0; i < squares.length; i++) {
             for (int j = 0; j < squares[i].length; j++) {
                 squares[i][j].setWidth(width);
