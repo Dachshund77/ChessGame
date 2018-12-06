@@ -5,7 +5,6 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.MainWindowController">
    <top>
       <MenuBar BorderPane.alignment="CENTER">
@@ -29,7 +28,7 @@
       </MenuBar>
    </top>
    <center>
-      <StackPane prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <StackPane fx:id="stackPaneGameArea" minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
             <Canvas fx:id="boardLayer" height="200.0" onMouseClicked="#handleMouseClick" width="200.0" />
          </children>

@@ -6,19 +6,19 @@ import javafx.scene.paint.Color;
 public class Square {
 
     private Color color;
-    private int width;
-    private int height;
-    private int xPosition;
-    private int yPosition;
+    private double width;
+    private double height;
+    private double PositionX; //TODO might be more sensible to use doubles
+    private double PositionY;
     private Coordinate coordinate;
     //private GamePiece gamePiece;
 
-    public Square(Color color, int width, int height, int xPosition, int yPosition,int xCoordinate, int yCoordinate) {
+    public Square(Color color, double width, double height, double xPosition, double yPosition,int xCoordinate, int yCoordinate) {
         this.color = color;
         this.width = width;
         this.height = height;
-        this.xPosition = xPosition;
-        this.yPosition = yPosition;
+        this.PositionX = xPosition;
+        this.PositionY = yPosition;
         this.coordinate = new Coordinate(xCoordinate,yCoordinate);
     }
 
@@ -26,20 +26,36 @@ public class Square {
         return color;
     }
 
-    public int getWidth() {
+    public double getWidth() {
         return width;
     }
 
-    public int getHeight() {
+    public double getHeight() {
         return height;
     }
 
-    public int getPositionX() {
-        return xPosition;
+    public double getPositionX() {
+        return PositionX;
     }
 
-    public int getPositionY() {
-        return yPosition;
+    public double getPositionY() {
+        return PositionY;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
+    public void setPositionX(int PositionX) {
+        this.PositionX = PositionX;
+    }
+
+    public void setPositionY(int PositionY) {
+        this.PositionY = PositionY;
     }
 
     public Coordinate getCoordinate() {
