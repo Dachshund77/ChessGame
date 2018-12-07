@@ -5,8 +5,7 @@ import Logic.Boards.ChessBoard;
 import Logic.Boards.Square;
 import Logic.Coordinate;
 import Logic.Games.Game;
-import Logic.Games.HotSeatGame;
-import Logic.Pieces.Faction;
+import Logic.Games.HotseatGame;
 import Logic.Pieces.GamePiece;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -50,9 +49,10 @@ public class MainWindowController {
     public void updateGUI() {
         if (game != null) {
             game.getChessBoard().resizeSquares();
+            drawHelp();
             drawBoard();
             drawPieces();
-            drawHelp();
+
         }
     }
 
@@ -61,7 +61,7 @@ public class MainWindowController {
 
             Square[][] squares = game.getChessBoard().getSquares();
             GraphicsContext gc = boardLayer.getGraphicsContext2D();
-
+            gc.clearRect(0, 0, boardLayer.getWidth(), piecesLayer.getHeight());
             for (Square[] square : squares) {
                 for (Square s : square) {
                     gc.setFill(s.getColor());
@@ -98,38 +98,44 @@ public class MainWindowController {
         }
     }
 
-    private void drawHelp() {
+    private void drawHelp() { //Todo eventual refactor
         if (game != null) {
             GraphicsContext gc = helpLayer.getGraphicsContext2D();
             gc.clearRect(0, 0, helpLayer.getWidth(), helpLayer.getHeight());
             if (game.getCurrentSelection() != null) {
                 GamePiece currentGamePiece = game.getCurrentSelection().getGamePiece();
                 Coordinate currentCoordinate = game.getCurrentSelection().getCoordinate();
-                ChessBoard board = game.getChessBoard();
-                ArrayList<Coordinate> validMoves = currentGamePiece.getValidMoves(board, currentCoordinate);
-                Square[][] squares = board.getSquares();
+
+                ArrayList<Coordinate> validMoves = currentGamePiece.getValidMoves(game.getChessBoard(), currentCoordinate);
+                double width = game.getCurrentSelection().getWidth();
+                double height = game.getCurrentSelection().getHeight();
+                double xPadding = width * 0.05;
+                double yPadding = height * 0.05;
+                double lineWidth = Math.sqrt(height * width)*0.05;
+                Square[][] squares = game.getChessBoard().getSquares();
+
+                //Drawing red square round possible moves
                 for (Square[] square : squares) {
                     for (Square s : square) {
                         Coordinate tempCoordinate = s.getCoordinate();
                         for (Coordinate validMove : validMoves) {
                             if (tempCoordinate.equals(validMove)) {
-                                System.out.println("DRAWING!");
                                 double x = s.getPositionX();
                                 double y = s.getPositionY();
-                                double width = s.getWidth();
-                                double height = s.getHeight();
-                                System.out.println("x = " + x);
-                                System.out.println("y = " + y);
-                                System.out.println("height = " + height);
-                                System.out.println("width = " + width);
-                                double lineWidth = 3;
-                                gc.setStroke(Color.GREEN);
+                                gc.setStroke(Color.RED);
                                 gc.setLineWidth(lineWidth);
-                                gc.strokeRect(x - lineWidth, y - lineWidth, width - 2 * lineWidth, height - 2 * height);
+                                gc.strokeRect(x+xPadding, y+yPadding, width-xPadding*2, height-yPadding*2);
+
                             }
                         }
                     }
                 }
+                //Drawing blue square around own position
+                double x = game.getCurrentSelection().getPositionX();
+                double y = game.getCurrentSelection().getPositionY();
+                gc.setStroke(Color.BLUE);
+                gc.setLineWidth(lineWidth);
+                gc.strokeRect(x+xPadding, y+yPadding, width-xPadding*2, height-yPadding*2);
             }
         }
     }
@@ -140,7 +146,7 @@ public class MainWindowController {
         if (game != null) {
             game.setTerminated(true);
         }
-        HotSeatGame hotSeatGame = new HotSeatGame(this);
+        HotseatGame hotSeatGame = new HotseatGame(this);
         this.game = hotSeatGame;
         Thread th = new Thread(hotSeatGame);
         th.start();
