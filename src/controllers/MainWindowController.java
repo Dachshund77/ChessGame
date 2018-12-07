@@ -15,6 +15,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
 import java.util.concurrent.locks.Condition;
@@ -108,8 +109,19 @@ public class MainWindowController {
                 Square[][] squares = board.getSquares();
                 for (Square[] square : squares) {
                     for (Square s : square) {
-                        if (validMoves.contains(s.getCoordinate())) {
-
+                        Coordinate tempCoordinate = s.getCoordinate();
+                        for (Coordinate validMove : validMoves) {
+                            if (tempCoordinate.equals(validMove)) {
+                                System.out.println("DRAWING!");
+                                double x = s.getPositionX();
+                                double y = s.getPositionY();
+                                double width = s.getWidth();
+                                double height = s.getHeight();
+                                int lineWidth = 50;
+                                gc.setStroke(Color.GREEN);
+                                gc.setLineWidth(lineWidth);
+                                gc.strokeRect(x - lineWidth, y - lineWidth, width - 2 * lineWidth, height - 2 * height);
+                            }
                         }
                     }
                 }

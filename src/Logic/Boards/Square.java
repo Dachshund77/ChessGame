@@ -76,6 +76,8 @@ public class Square {
         return coordinate;
     }
 
+
+
     public void logInfo(){
         System.out.println("coordinate = x:" + coordinate.getCoordinateX()+" y:"+coordinate.getCoordinateY());
         if (gamePiece != null) {
