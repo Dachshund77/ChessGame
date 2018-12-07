@@ -1,5 +1,6 @@
 package Logic.Boards;
 
+import Logic.Coordinate;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.paint.Color;
 
@@ -65,6 +66,12 @@ public class ChessBoard {
             }
         }
         return returnSquare;
+    }
+
+    public Square getSquare(Coordinate coordinate){
+        int x = coordinate.getCoordinateX();
+        int y = coordinate.getCoordinateY();
+        return squares[x][y];
     }
 
 

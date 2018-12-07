@@ -10,7 +10,7 @@ public enum Faction {
         this.name = name;
     }
 
-    String getName(){
+    public String getNormalName(){
         return this.name;
     }
 }

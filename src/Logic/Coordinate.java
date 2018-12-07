@@ -37,13 +37,13 @@ public class Coordinate {
         return returnBoolean;
     }
 
-    public boolean isValidCoordinate(ChessBoard board){
+    public boolean isValidCoordinate(ChessBoard board){ //TODO need to be more accurate
         boolean returnBoolean = true;
-        System.out.println(board.getSquares().length);
-        if (xCoordinate < 0 || xCoordinate > board.getSquares().length-1){
+        int boardLength = board.getSquares().length-1; //That should be 7, length it 8
+        if (xCoordinate < 0 || xCoordinate > boardLength){
             returnBoolean = false;
         }
-        if (yCoordinate < 0 || yCoordinate > board.getSquares().length-1){
+        if (yCoordinate < 0 || yCoordinate > boardLength){
             returnBoolean = false;
         }
         return returnBoolean;

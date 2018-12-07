@@ -12,10 +12,10 @@ public abstract class GamePiece {
     private UnitType unitType;
     private URL imageURL;
 
-    public GamePiece(Faction faction, UnitType unitType){
+    public GamePiece(Faction faction, UnitType unitType) {
         this.faction = faction;
         this.unitType = unitType;
-        this.imageURL = getClass().getResource("../../resources/"+faction.getName()+"_"+unitType.getName()+".png");
+        this.imageURL = getClass().getResource("../../resources/" + faction.getNormalName() + "_" + unitType.getName() + ".png");
 
     }
 
@@ -24,6 +24,19 @@ public abstract class GamePiece {
     }
 
     public abstract ArrayList<Coordinate> getValidMoves(ChessBoard board, Coordinate currentCoordinate);
+
+    Boolean containsFriendly(ChessBoard board, Coordinate coordinate) {
+        Boolean returnBoolean = null;
+        GamePiece gamePiece = board.getSquare(coordinate).getGamePiece();
+        if (gamePiece != null) {
+            if (gamePiece.getFaction() == faction) {
+                returnBoolean = true;
+            } else if (gamePiece.getFaction() != faction) {
+                returnBoolean = false;
+            }
+        }
+        return returnBoolean;
+    }
 
     public Faction getFaction() {
         return faction;

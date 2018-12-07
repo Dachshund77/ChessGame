@@ -3,6 +3,7 @@ package Logic.Games;
 import Logic.Boards.Square;
 import Logic.Pieces.Faction;
 import controllers.MainWindowController;
+import javafx.application.Platform;
 
 public class HotSeatGame extends Game {
 
@@ -16,6 +17,7 @@ public class HotSeatGame extends Game {
         try {
             setUpBoard();
             while (!super.isTerminated() && !hasGameEnded()) {
+                Platform.runLater(()-> getController().setInfoLabel(getTurnOrder().getNormalName()+" players turn!"));
                 getController().getContinueCondition().await();
                 checkForGameEnd();
             }
@@ -28,10 +30,10 @@ public class HotSeatGame extends Game {
 
     public void processUserInput(Square newSelection){
 
-        if (!super.isTerminated()){
-            if (super.getCurrentSelection() != null && isValidMove(newSelection)){ //While haveing a selection cheks if cliked valid square
+        if (!super.isTerminated()){ //TODO increase readbility and remove unneeded statements
+            if (super.getCurrentSelection() != null && isValidMove(newSelection)){ //While having a selection checks if clicked valid square
                 System.out.println("Process: selected valid move ");
-                updateBoardState(super.getCurrentSelection().getCoordinate(),newSelection.getCoordinate());
+                movePiece(super.getCurrentSelection().getCoordinate(),newSelection.getCoordinate());
                 super.setCurrentSelection(null);
                 if (super.getTurnOrder() == Faction.WHITE){
                     super.setTurnOrder(Faction.BLACK);
@@ -53,7 +55,7 @@ public class HotSeatGame extends Game {
                 System.out.println("Process: selected friendly piece");
             }
             else {
-                System.out.println("Proces: set selection to null");
+                System.out.println("Process: set selection to null");
                 super.setCurrentSelection(null);
             }
         }
