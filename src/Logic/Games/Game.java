@@ -9,7 +9,7 @@ import javafx.application.Platform;
 
 import java.util.ArrayList;
 
-public abstract class Game implements Runnable {
+public abstract class Game implements Runnable { //TODO might be sensible to make own interface
 
     private volatile boolean terminated = false;
 
@@ -62,7 +62,7 @@ public abstract class Game implements Runnable {
             boolean whiteKingAlive = false;
             for (Square[] square : squares) {
                 for (Square s : square) {
-                    GamePiece gamePiece = s.getGamePiece();
+                    GamePieces gamePiece = s.getGamePiece();
                     if (gamePiece != null) {
                         if (gamePiece.getUnitType() == UnitType.KING) {
                             if (gamePiece.getFaction() == Faction.WHITE) {
@@ -86,22 +86,61 @@ public abstract class Game implements Runnable {
         }
     }
 
-    void movePiece(Coordinate origin, Coordinate destination) { //TODO remove piece from en passante
+    void movePiece(Coordinate origin, Coordinate destination) { //TODO remove piece from en passante, also possible candidate for refactoring
         if (!terminated && !hasGameEnded) { //Blocks any incoming moves
+            //Handling normal move
             Square[][] squares = chessBoard.getSquares();
-            GamePiece pieceMoved = squares[origin.getCoordinateX()][origin.getCoordinateY()].getGamePiece();
+            GamePieces pieceMoved = squares[origin.getCoordinateX()][origin.getCoordinateY()].getGamePiece();
             squares[origin.getCoordinateX()][origin.getCoordinateY()].removeGamePiece();
             squares[destination.getCoordinateX()][destination.getCoordinateY()].setGamePiece(pieceMoved);
+            //Special cases
             UnitType typeMoved = pieceMoved.getUnitType();
+            //Castle
+            if (typeMoved == UnitType.KING && Math.abs(origin.getCoordinateX() - destination.getCoordinateX()) == 2){
+                if (destination.getCoordinateX() == 2){
+                    GamePieces movingCastle = squares[0][destination.getCoordinateY()].getGamePiece();
+                    squares[0][destination.getCoordinateY()].removeGamePiece();
+                    squares[3][destination.getCoordinateY()].setGamePiece(movingCastle);
+                }
+            }
+            if (typeMoved == UnitType.KING && Math.abs(origin.getCoordinateX() - destination.getCoordinateX()) == 2){
+                if (destination.getCoordinateX() == 6){
+                    GamePieces movingCastle = squares[7][destination.getCoordinateY()].getGamePiece();
+                    squares[7][destination.getCoordinateY()].removeGamePiece();
+                    squares[5][destination.getCoordinateY()].setGamePiece(movingCastle);
+                }
+            }
+            //Promotion
+            if (typeMoved == UnitType.PAWN && destination.getCoordinateY() == 0 || destination.getCoordinateY() == 7){
+                UnitType promotionType = controller.promotePawnDialog();
+                Faction promotionFaction = pieceMoved.getFaction();
+                GamePieces promotionPiece = null;
+                switch (promotionType){
+                    case QUEEN:
+                        promotionPiece = new Queen(promotionFaction);
+                        break;
+                    case ROCK:
+                        promotionPiece = new Rock(promotionFaction);
+                        break;
+                    case BISHOP:
+                        promotionPiece = new Bishop(promotionFaction);
+                        break;
+                    case KNIGHT:
+                        promotionPiece = new King(promotionFaction);
+                        break;
+                }
+                squares[destination.getCoordinateX()][destination.getCoordinateY()].setGamePiece(promotionPiece);
+            }
+
             raiseMovedFlag(pieceMoved);
             resetEnPssanteFlag();
-            if (typeMoved == UnitType.PAWN && Math.abs(origin.getCoordinateX() - destination.getCoordinateX()) == 2) {
+            if (typeMoved == UnitType.PAWN && Math.abs(origin.getCoordinateX() - destination.getCoordinateX()) == 2) { //Shouldnt this be y axis?
                 raiseEnPassantFlag(destination);
             }
         }
     }
 
-    private void raiseMovedFlag(GamePiece pieceMoved) {
+    private void raiseMovedFlag(GamePieces pieceMoved) {
         if (!terminated) {
             switch (pieceMoved.getUnitType()) {
                 case KING:
@@ -141,14 +180,14 @@ public abstract class Game implements Runnable {
             Coordinate left = new Coordinate(destination.getCoordinateX() - 1, destination.getCoordinateY());
             Coordinate right = new Coordinate(destination.getCoordinateX() + 1, destination.getCoordinateY());
             if (left.isValidCoordinate(chessBoard)) {
-                GamePiece leftGamePiece = chessBoard.getSquare(left).getGamePiece();
+                GamePieces leftGamePiece = chessBoard.getSquare(left).getGamePiece();
                 if (leftGamePiece.getUnitType() == UnitType.PAWN) {
                     Pawn pawn = (Pawn) leftGamePiece;
                     pawn.setCanEnPassant(true);
                 }
             }
             if (right.isValidCoordinate(chessBoard)) {
-                GamePiece rightGamePiece = chessBoard.getSquare(right).getGamePiece();
+                GamePieces rightGamePiece = chessBoard.getSquare(right).getGamePiece();
                 if (rightGamePiece.getUnitType() == UnitType.PAWN) {
                     Pawn pawn = (Pawn) rightGamePiece;
                     pawn.setCanEnPassant(true);

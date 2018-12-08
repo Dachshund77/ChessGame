@@ -4,9 +4,8 @@ import Logic.Boards.ChessBoard;
 import Logic.Coordinate;
 
 import java.net.URL;
-import java.util.ArrayList;
 
-public abstract class GamePiece {
+public abstract class GamePiece implements GamePieces{
 
     private Faction faction;
     private UnitType unitType;
@@ -15,7 +14,7 @@ public abstract class GamePiece {
     public GamePiece(Faction faction, UnitType unitType) {
         this.faction = faction;
         this.unitType = unitType;
-        this.imageURL = getClass().getResource("../../resources/" + faction.getNormalName() + "_" + unitType.getName() + ".png");
+        this.imageURL = getClass().getResource("../../resources/" + faction.getNormalName() + "_" + unitType.getNormalName() + ".png");
 
     }
 
@@ -23,11 +22,9 @@ public abstract class GamePiece {
         return imageURL;
     }
 
-    public abstract ArrayList<Coordinate> getValidMoves(ChessBoard board, Coordinate currentCoordinate);
-
-    Boolean containsFriendly(ChessBoard board, Coordinate coordinate) {
+    public Boolean containsFriendly(ChessBoard board, Coordinate coordinate) {
         Boolean returnBoolean = null;
-        GamePiece gamePiece = board.getSquare(coordinate).getGamePiece();
+        GamePieces gamePiece = board.getSquare(coordinate).getGamePiece();
         if (gamePiece != null) {
             if (gamePiece.getFaction() == faction) {
                 returnBoolean = true;

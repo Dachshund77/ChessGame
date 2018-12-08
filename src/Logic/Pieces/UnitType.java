@@ -14,7 +14,7 @@ public enum UnitType {
         this.name = name;
     }
 
-    public String getName(){
+    public String getNormalName(){
         return this.name;
     }
 }

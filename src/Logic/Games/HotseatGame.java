@@ -18,6 +18,7 @@ public class HotseatGame extends Game {
             setUpBoard();
             while (!super.isTerminated() && !hasGameEnded()) {
                 Platform.runLater(()-> getController().setInfoLabel(getTurnOrder().getNormalName()+" players turn!"));
+                Platform.runLater(()-> getController().updateGUI());
                 getController().getContinueCondition().await();
                 checkForGameEnd();
             }
@@ -32,7 +33,7 @@ public class HotseatGame extends Game {
 
         if (!super.isTerminated()){ //TODO increase readbility and remove unneeded statements
             if (super.getCurrentSelection() != null && isValidMove(newSelection)){ //While having a selection checks if clicked valid square
-                System.out.println("Process: selected valid move ");
+                //System.out.println("Process: selected valid move ");
                 movePiece(super.getCurrentSelection().getCoordinate(),newSelection.getCoordinate());
                 super.setCurrentSelection(null);
                 if (super.getTurnOrder() == Faction.WHITE){
@@ -44,18 +45,18 @@ public class HotseatGame extends Game {
             }
             else if(newSelection.getGamePiece() == null){ //Selected a empty space
                 this.setCurrentSelection(null);
-                System.out.println("Process: selected empty space");
+                //System.out.println("Process: selected empty space");
             }
             else if(newSelection.equals(super.getCurrentSelection())){ //Selected same space
                 super.setCurrentSelection(null);
-                System.out.println("Process: selected same space");
+                //System.out.println("Process: selected same space");
             }
             else if (newSelection.getGamePiece().getFaction().equals(super.getTurnOrder())){ //Selected an friendly piece
                 super.setCurrentSelection(newSelection);
-                System.out.println("Process: selected friendly piece");
+                //System.out.println("Process: selected friendly piece");
             }
             else {
-                System.out.println("Process: set selection to null");
+                //System.out.println("Process: set selection to null");
                 super.setCurrentSelection(null);
             }
         }

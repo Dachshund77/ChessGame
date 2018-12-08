@@ -1,16 +1,18 @@
 package controllers;
 
-
-import Logic.Boards.ChessBoard;
 import Logic.Boards.Square;
 import Logic.Coordinate;
 import Logic.Games.Game;
 import Logic.Games.HotseatGame;
+import Logic.Pieces.Faction;
 import Logic.Pieces.GamePiece;
+import Logic.Pieces.GamePieces;
+import Logic.Pieces.UnitType;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
@@ -18,6 +20,8 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -50,18 +54,17 @@ public class MainWindowController {
         if (game != null) {
             game.getChessBoard().resizeSquares();
             drawHelp();
-            drawBoard();
             drawPieces();
+            drawBoard();
 
         }
     }
 
     private void drawBoard() {
         if (game != null) {
-
             Square[][] squares = game.getChessBoard().getSquares();
             GraphicsContext gc = boardLayer.getGraphicsContext2D();
-            gc.clearRect(0, 0, boardLayer.getWidth(), piecesLayer.getHeight());
+            gc.clearRect(0, 0, boardLayer.getWidth(), boardLayer.getHeight());
             for (Square[] square : squares) {
                 for (Square s : square) {
                     gc.setFill(s.getColor());
@@ -82,7 +85,7 @@ public class MainWindowController {
             gc.clearRect(0, 0, piecesLayer.getWidth(), piecesLayer.getHeight());
             for (Square[] square : squares) {
                 for (Square s : square) {
-                    GamePiece gamePiece = s.getGamePiece();
+                    GamePieces gamePiece = s.getGamePiece();
                     if (gamePiece != null) {
                         double xPosition = s.getPositionX();
                         double yPosition = s.getPositionY();
@@ -103,7 +106,7 @@ public class MainWindowController {
             GraphicsContext gc = helpLayer.getGraphicsContext2D();
             gc.clearRect(0, 0, helpLayer.getWidth(), helpLayer.getHeight());
             if (game.getCurrentSelection() != null) {
-                GamePiece currentGamePiece = game.getCurrentSelection().getGamePiece();
+                GamePieces currentGamePiece = game.getCurrentSelection().getGamePiece();
                 Coordinate currentCoordinate = game.getCurrentSelection().getCoordinate();
 
                 ArrayList<Coordinate> validMoves = currentGamePiece.getValidMoves(game.getChessBoard(), currentCoordinate);
@@ -150,7 +153,6 @@ public class MainWindowController {
         this.game = hotSeatGame;
         Thread th = new Thread(hotSeatGame);
         th.start();
-        updateGUI();
     }
 
     @FXML
@@ -162,7 +164,7 @@ public class MainWindowController {
         double y = mouseEvent.getY();
         Square clickedSquare = game.getChessBoard().getSquare(x, y);
 
-        clickedSquare.logInfo();
+        //clickedSquare.logInfo();
 
         boolean workDone = false;
         while (!workDone) {
@@ -176,7 +178,43 @@ public class MainWindowController {
                 }
             }
         }
+    }
 
+    public UnitType promotePawnDialog(){ //TODO possible candidate for rewrite
+        UnitType returnUnitType = null;
+
+        List<String> choices = new ArrayList<>();
+        choices.add(UnitType.QUEEN.getNormalName());
+        choices.add(UnitType.ROCK.getNormalName());
+        choices.add(UnitType.KNIGHT.getNormalName());
+        choices.add(UnitType.BISHOP.getNormalName());
+
+        Optional<String> result;
+        do {
+            ChoiceDialog<String> dialog = new ChoiceDialog<>("Queen", choices);
+            dialog.setTitle("Promotion Dialog");
+            dialog.setHeaderText("Your Pawn may be promoted!");
+            dialog.setContentText("Choose a type: ");
+
+            result = dialog.showAndWait();
+        }while (!result.isPresent());
+        String resultString = result.get();
+        System.out.println(resultString);
+        switch (resultString) {
+            case "Queen":
+                returnUnitType = UnitType.QUEEN;
+                return returnUnitType;
+            case "Rock":
+                returnUnitType = UnitType.ROCK;
+                return returnUnitType;
+            case "Knight":
+                returnUnitType = UnitType.KNIGHT;
+                return returnUnitType;
+            case "Bishop":
+                returnUnitType = UnitType.BISHOP;
+                return returnUnitType;
+        }
+        return returnUnitType;
     }
 
 
