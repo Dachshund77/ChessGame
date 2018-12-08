@@ -5,7 +5,7 @@ import Logic.Pieces.Faction;
 import controllers.MainWindowController;
 import javafx.application.Platform;
 
-public class HotseatGame extends Game {
+class HotseatGame extends Game {
 
     public HotseatGame(MainWindowController controller) {
         super(controller);
