@@ -1,5 +1,6 @@
 # Created by .ignore support plugin (hsz.mobi)
 .idea/
 BoardGame.iml
-src/resources
 out/
+src/resources/
+.gitignore

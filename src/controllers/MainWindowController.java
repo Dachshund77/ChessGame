@@ -3,7 +3,8 @@ package controllers;
 import Logic.Boards.Square;
 import Logic.Coordinate;
 import Logic.Games.Game;
-import Logic.Games.HotseatGame;
+import Logic.Games.HotSeatGame;
+import Logic.Games.HotSeatGame;
 import Logic.Pieces.Faction;
 import Logic.Pieces.GamePiece;
 import Logic.Pieces.GamePieces;
@@ -149,7 +150,7 @@ public class MainWindowController {
         if (game != null) {
             game.setTerminated(true);
         }
-        HotseatGame hotSeatGame = new HotseatGame(this);
+        HotSeatGame hotSeatGame = new HotSeatGame(this);
         this.game = hotSeatGame;
         Thread th = new Thread(hotSeatGame);
         th.start();
