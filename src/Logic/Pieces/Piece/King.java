@@ -1,7 +1,11 @@
-package Logic.Pieces;
+package Logic.Pieces.Piece;
 
 import Logic.Boards.ChessBoard;
 import Logic.Coordinate;
+import Logic.Pieces.Faction;
+import Logic.Pieces.GamePiece;
+import Logic.Pieces.GamePieces;
+import Logic.Pieces.UnitType;
 
 import java.util.ArrayList;
 

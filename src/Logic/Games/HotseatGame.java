@@ -2,7 +2,7 @@ package Logic.Games;
 
 import Logic.Boards.Square;
 import Logic.Pieces.Faction;
-import controllers.MainWindowController;
+import Controllers.MainWindowController;
 import javafx.application.Platform;
 
 public class HotSeatGame extends Game {
@@ -31,7 +31,7 @@ public class HotSeatGame extends Game {
 
     public void processUserInput(Square newSelection){
 
-        if (!super.isTerminated()){ //TODO increase readbility and remove unneeded statements
+        if (!super.isTerminated() && !super.hasGameEnded()){ //TODO increase readbility and remove unneeded statements
             if (super.getCurrentSelection() != null && isValidMove(newSelection)){ //While having a selection checks if clicked valid square
                 //System.out.println("Process: selected valid move ");
                 movePiece(super.getCurrentSelection().getCoordinate(),newSelection.getCoordinate());
@@ -51,9 +51,9 @@ public class HotSeatGame extends Game {
                 super.setCurrentSelection(null);
                 //System.out.println("Process: selected same space");
             }
-            else if (newSelection.getGamePiece().getFaction().equals(super.getTurnOrder())){ //Selected an friendly piece
+            else if (newSelection.getGamePiece().getFaction().equals(super.getTurnOrder())){ //Selected an friendly Piece
                 super.setCurrentSelection(newSelection);
-                //System.out.println("Process: selected friendly piece");
+                //System.out.println("Process: selected friendly Piece");
             }
             else {
                 //System.out.println("Process: set selection to null");

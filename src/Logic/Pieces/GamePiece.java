@@ -14,7 +14,7 @@ public abstract class GamePiece implements GamePieces{
     public GamePiece(Faction faction, UnitType unitType) {
         this.faction = faction;
         this.unitType = unitType;
-        this.imageURL = getClass().getResource("../../resources/" + faction.getNormalName() + "_" + unitType.getNormalName() + ".png");
+        this.imageURL = getClass().getResource("../../../resources/" + faction.getNormalName() + "_" + unitType.getNormalName() + ".png");
 
     }
 

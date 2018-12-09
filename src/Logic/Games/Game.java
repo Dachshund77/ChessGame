@@ -4,7 +4,8 @@ import Logic.Boards.ChessBoard;
 import Logic.Boards.Square;
 import Logic.Coordinate;
 import Logic.Pieces.*;
-import controllers.MainWindowController;
+import Logic.Pieces.Piece.*;
+import Controllers.MainWindowController;
 import javafx.application.Platform;
 
 import java.util.ArrayList;
@@ -27,7 +28,7 @@ public abstract class Game implements Runnable { //TODO might be sensible to mak
 
     void setUpBoard() {
         if (!terminated) {
-            //Black pieces
+            //Black Pieces
             Square[][] squares = chessBoard.getSquares();
             squares[0][0].setGamePiece(new Rock(Faction.BLACK));
             squares[1][0].setGamePiece(new Knight(Faction.BLACK));
@@ -40,7 +41,7 @@ public abstract class Game implements Runnable { //TODO might be sensible to mak
             for (int i = 0; i < squares[1].length; i++) {
                 squares[i][1].setGamePiece(new Pawn(Faction.BLACK));
             }
-            //White pieces
+            //White Pieces
             squares[0][7].setGamePiece(new Rock(Faction.WHITE));
             squares[1][7].setGamePiece(new Knight(Faction.WHITE));
             squares[2][7].setGamePiece(new Bishop(Faction.WHITE));
@@ -86,7 +87,7 @@ public abstract class Game implements Runnable { //TODO might be sensible to mak
         }
     }
 
-    void movePiece(Coordinate origin, Coordinate destination) { //TODO remove piece from en passante, also possible candidate for refactoring
+    void movePiece(Coordinate origin, Coordinate destination) { //TODO remove Piece from en passante, also possible candidate for refactoring
         if (!terminated && !hasGameEnded) { //Blocks any incoming moves
             //Handling normal move
             Square[][] squares = chessBoard.getSquares();
@@ -126,17 +127,29 @@ public abstract class Game implements Runnable { //TODO might be sensible to mak
                         promotionPiece = new Bishop(promotionFaction);
                         break;
                     case KNIGHT:
-                        promotionPiece = new King(promotionFaction);
+                        promotionPiece = new Knight(promotionFaction);
                         break;
                 }
                 squares[destination.getCoordinateX()][destination.getCoordinateY()].setGamePiece(promotionPiece);
             }
-
-            raiseMovedFlag(pieceMoved);
+            //En Passante
+            if (typeMoved == UnitType.PAWN ) {
+                Pawn pawn = (Pawn) pieceMoved;
+                if (pawn.getEnPassanteCordinate() != null && destination.getCoordinateX() == pawn.getEnPassanteCordinate().getCoordinateX()){
+                    if (pieceMoved.getFaction() == Faction.WHITE){
+                        squares[destination.getCoordinateX()][destination.getCoordinateY()+1].removeGamePiece();
+                    }
+                    else{
+                        squares[destination.getCoordinateX()][destination.getCoordinateY()-1].removeGamePiece();
+                    }
+                }
+            }
+            //Updating flags
             resetEnPssanteFlag();
-            if (typeMoved == UnitType.PAWN && Math.abs(origin.getCoordinateX() - destination.getCoordinateX()) == 2) { //Shouldnt this be y axis?
+            if (typeMoved == UnitType.PAWN){
                 raiseEnPassantFlag(destination);
             }
+            raiseMovedFlag(pieceMoved);
         }
     }
 
@@ -168,7 +181,7 @@ public abstract class Game implements Runnable { //TODO might be sensible to mak
                 for (Square s : square) {
                     if (s.getGamePiece() != null && s.getGamePiece().getUnitType() == UnitType.PAWN) {
                         Pawn pawn = (Pawn) s.getGamePiece();
-                        pawn.setCanEnPassant(false);
+                        pawn.setEnPassanteCordinate(null);
                     }
                 }
             }
@@ -181,16 +194,16 @@ public abstract class Game implements Runnable { //TODO might be sensible to mak
             Coordinate right = new Coordinate(destination.getCoordinateX() + 1, destination.getCoordinateY());
             if (left.isValidCoordinate(chessBoard)) {
                 GamePieces leftGamePiece = chessBoard.getSquare(left).getGamePiece();
-                if (leftGamePiece.getUnitType() == UnitType.PAWN) {
+                if (leftGamePiece != null && leftGamePiece.getUnitType() == UnitType.PAWN) {
                     Pawn pawn = (Pawn) leftGamePiece;
-                    pawn.setCanEnPassant(true);
+                    pawn.setEnPassanteCordinate(destination);
                 }
             }
             if (right.isValidCoordinate(chessBoard)) {
                 GamePieces rightGamePiece = chessBoard.getSquare(right).getGamePiece();
-                if (rightGamePiece.getUnitType() == UnitType.PAWN) {
+                if (rightGamePiece != null && rightGamePiece.getUnitType() == UnitType.PAWN) {
                     Pawn pawn = (Pawn) rightGamePiece;
-                    pawn.setCanEnPassant(true);
+                    pawn.setEnPassanteCordinate(destination);
                 }
             }
         }

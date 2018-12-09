@@ -1,7 +1,6 @@
 package Logic.Boards;
 
 import Logic.Coordinate;
-import Logic.Pieces.GamePiece;
 import Logic.Pieces.GamePieces;
 import javafx.scene.paint.Color;
 

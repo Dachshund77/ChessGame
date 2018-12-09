@@ -1,4 +1,4 @@
-package views;
+package Views;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -12,7 +12,7 @@ public class MainWindow extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("../fxmls/MainWindowFXML.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("../Fxmls/MainWindowFXML.fxml"));
 
         Scene scene = new Scene(root);
 

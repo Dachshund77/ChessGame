@@ -1,12 +1,9 @@
-package controllers;
+package Controllers;
 
 import Logic.Boards.Square;
 import Logic.Coordinate;
 import Logic.Games.Game;
 import Logic.Games.HotSeatGame;
-import Logic.Games.HotSeatGame;
-import Logic.Pieces.Faction;
-import Logic.Pieces.GamePiece;
 import Logic.Pieces.GamePieces;
 import Logic.Pieces.UnitType;
 import javafx.event.ActionEvent;
@@ -57,7 +54,6 @@ public class MainWindowController {
             drawHelp();
             drawPieces();
             drawBoard();
-
         }
     }
 
