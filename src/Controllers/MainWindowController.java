@@ -30,7 +30,8 @@ import java.util.concurrent.locks.ReentrantLock;
  * <p> In this class we will keep a references of a {@link Logic.Games.Game} object.
  * Note that the Game Object is a runnable and therefor we need a lock.
  * This class will be the owner of said Lock to enable synchronisation between both classes.
- *
+ * @see Game
+ * @see Views.MainWindow
  */
 public class MainWindowController {
 
@@ -88,10 +89,11 @@ public class MainWindowController {
             for (Square[] square : squares) {
                 for (Square s : square) {
                     gc.setFill(s.getColor());
-                    double xPosition = s.getPositionX();
-                    double yPosition = s.getPositionY();
                     double width = s.getWidth();
                     double height = s.getHeight();
+                    double xPosition = s.getCoordinate().getCoordinateX() * width;
+                    double yPosition = s.getCoordinate().getCoordinateY() * height;
+
                     gc.fillRect(xPosition, yPosition, width, height);
                 }
             }
@@ -111,10 +113,10 @@ public class MainWindowController {
                 for (Square s : square) {
                     GamePieces gamePiece = s.getGamePiece();
                     if (gamePiece != null) {
-                        double xPosition = s.getPositionX();
-                        double yPosition = s.getPositionY();
                         double width = s.getWidth();
                         double height = s.getHeight();
+                        double xPosition = s.getCoordinate().getCoordinateX() * width;
+                        double yPosition = s.getCoordinate().getCoordinateY() * height;
 
                         Image image = new Image(String.valueOf(gamePiece.getImageURL()));
                         gc.drawImage(image, xPosition, yPosition, width, height);
@@ -132,8 +134,10 @@ public class MainWindowController {
      */
     private void drawHelp() { //Todo eventual refactor
         if (game != null) {
+            //Resetting the canvas
             GraphicsContext gc = helpLayer.getGraphicsContext2D();
             gc.clearRect(0, 0, helpLayer.getWidth(), helpLayer.getHeight());
+
             if (game.getCurrentSelection() != null) {
                 //getting needed values
                 GamePieces currentGamePiece = game.getCurrentSelection().getGamePiece();
@@ -153,22 +157,22 @@ public class MainWindowController {
                         Coordinate tempCoordinate = s.getCoordinate();
                         for (Coordinate validMove : validMoves) {
                             if (tempCoordinate.equals(validMove)) {
-                                double x = s.getPositionX();
-                                double y = s.getPositionY();
+                                double xPosition = s.getCoordinate().getCoordinateX() * width;
+                                double yPosition = s.getCoordinate().getCoordinateY() * height;
                                 gc.setStroke(Color.RED);
                                 gc.setLineWidth(lineWidth);
-                                gc.strokeRect(x+xPadding, y+yPadding, width-xPadding*2, height-yPadding*2);
+                                gc.strokeRect(xPosition+xPadding, yPosition+yPadding, width-xPadding*2, height-yPadding*2);
 
                             }
                         }
                     }
                 }
                 //Drawing blue square around own position
-                double x = game.getCurrentSelection().getPositionX();
-                double y = game.getCurrentSelection().getPositionY();
+                double xPosition = game.getCurrentSelection().getCoordinate().getCoordinateX() * width;
+                double yPosition = game.getCurrentSelection().getCoordinate().getCoordinateY() * height;
                 gc.setStroke(Color.BLUE);
                 gc.setLineWidth(lineWidth);
-                gc.strokeRect(x+xPadding, y+yPadding, width-xPadding*2, height-yPadding*2);
+                gc.strokeRect(xPosition+xPadding, yPosition+yPadding, width-xPadding*2, height-yPadding*2);
             }
         }
     }

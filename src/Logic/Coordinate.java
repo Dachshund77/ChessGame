@@ -4,8 +4,9 @@ import Logic.Boards.ChessBoard;
 import Logic.Boards.Square;
 
 /**
- * Thees object will be used to store a x and y coordinate on the board.
+ * Thees object will be used to store a x and y coordinate on a given Square.
  * Note that Squares[x][y] should have a 0,0 value in the top left corner
+ * @see Square
  */
 public class Coordinate {
 
@@ -61,7 +62,7 @@ public class Coordinate {
     }
 
     /**
-     * Checks if the coordinates exist on the Chessboard.
+     * Checks if the coordinates exist on the {@link Logic.Boards.ChessBoard}.
      * @param board chessboard we will check the length of
      * @return true if the coordinate is valid
      */

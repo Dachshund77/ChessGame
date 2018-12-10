@@ -13,15 +13,13 @@ public class ChessBoard {
         squares = initializeSquares();
     }
 
-    public void resizeSquares() {
+    public void resizeSquares() { //TODO can be slightly rewritten
         double height = displayCanvas.getHeight() / 8;
         double width = displayCanvas.getWidth() / 8;
         for (int i = 0; i < squares.length; i++) {
             for (int j = 0; j < squares[i].length; j++) {
                 squares[i][j].setWidth(width);
                 squares[i][j].setHeight(height);
-                squares[i][j].setPositionX(width * i);
-                squares[i][j].setPositionY(height * j);
             }
         }
     }
@@ -37,12 +35,12 @@ public class ChessBoard {
                 switch (counter) {
                     case 0:
                         //White square
-                        returnArray[i][j] = new Square(Color.rgb(221, 220, 201), width, height, width * i, height * j, i, j);
+                        returnArray[i][j] = new Square(Color.rgb(221, 220, 201), width, height, i, j);
                         counter++;
                         break;
                     case 1:
                         //Black square
-                        returnArray[i][j] = new Square(Color.rgb(102, 93, 0), width, height, width * i, height * j, i, j);
+                        returnArray[i][j] = new Square(Color.rgb(102, 93, 0), width, height, i, j);
                         counter--;
                         break;
                 }
@@ -57,10 +55,18 @@ public class ChessBoard {
 
     public Square getSquare(double xPosition, double yPosition) {
         Square returnSquare = null;
+
         for (Square[] square : squares) {
             for (Square s : square) {
-                if (s.getPositionX() <= xPosition && s.getPositionX() + s.getWidth() >= xPosition &&
-                        s.getPositionY() <= yPosition && s.getPositionY() + s.getHeight() >= yPosition) {
+                double width = s.getWidth();
+                double height = s.getHeight();
+                int xCoordinate = s.getCoordinate().getCoordinateX();
+                int yCoordinate = s.getCoordinate().getCoordinateY();
+                double xAnchor = xCoordinate * width; //The upper left corner of the square
+                double yAnchor = yCoordinate * height;
+                //Now we check we if the x/y clicked is in the bounds of the square
+                if (xPosition >= xAnchor && xPosition <= xAnchor + width &&
+                    yPosition >= yAnchor && yPosition <= yAnchor + height){
                     returnSquare = s;
                 }
             }
