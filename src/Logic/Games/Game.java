@@ -112,7 +112,7 @@ public abstract class Game implements Runnable { //TODO might be sensible to mak
                 }
             }
             //Promotion
-            if (typeMoved == UnitType.PAWN && destination.getCoordinateY() == 0 || destination.getCoordinateY() == 7){
+            if (typeMoved == UnitType.PAWN && (destination.getCoordinateY() == 0 || destination.getCoordinateY() == 7)){
                 UnitType promotionType = controller.promotePawnDialog();
                 Faction promotionFaction = pieceMoved.getFaction();
                 GamePieces promotionPiece = null;

@@ -8,6 +8,9 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
+/**
+ * Main window the user interacts with.
+ */
 public class MainWindow extends Application {
 
     @Override
@@ -16,6 +19,7 @@ public class MainWindow extends Application {
 
         Scene scene = new Scene(root);
 
+        //The following code fill keep the canvas layer at the same size as the the parent stackPane
         StackPane stackPaneRoot = (StackPane) scene.lookup("#stackPaneGameArea");
 
         Canvas boardLayer = (Canvas) scene.lookup("#boardLayer");
@@ -39,4 +43,3 @@ public class MainWindow extends Application {
         launch(args);
     }
 }
-//Draw image(url)
