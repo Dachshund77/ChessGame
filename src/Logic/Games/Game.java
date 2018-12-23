@@ -10,7 +10,7 @@ import javafx.application.Platform;
 
 import java.util.ArrayList;
 
-public abstract class Game implements Runnable { //TODO might be sensible to make own interface
+public abstract class Game implements Runnable, Games{ //TODO might be sensible to make own interface
 
     private volatile boolean terminated = false;
 
@@ -208,8 +208,6 @@ public abstract class Game implements Runnable { //TODO might be sensible to mak
             }
         }
     }
-
-    public abstract void processUserInput(Square newSelection);
 
     boolean isValidMove(Square newSelection) {
         boolean returnBoolean = false;

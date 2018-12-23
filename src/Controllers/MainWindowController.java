@@ -4,6 +4,7 @@ import Logic.Boards.ChessBoard;
 import Logic.Boards.Square;
 import Logic.Coordinate;
 import Logic.Games.Game;
+import Logic.Games.Games;
 import Logic.Games.HotSeatGame;
 import Logic.Pieces.GamePieces;
 import Logic.Pieces.UnitType;
@@ -48,7 +49,7 @@ public class MainWindowController {
 
     private Lock continueLock = new ReentrantLock();
     private Condition continueCondition = continueLock.newCondition();
-    private Game game;
+    private Games game;
 
 
     /**

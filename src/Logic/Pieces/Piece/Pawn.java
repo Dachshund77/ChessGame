@@ -77,7 +77,7 @@ public class Pawn extends GamePiece {
         return returnArrayList;
     }
 
-    private ArrayList<Coordinate> getValidBlackMoves(ChessBoard board, Coordinate currentCoordinate) { //TODO removing en passable game Piece?
+    private ArrayList<Coordinate> getValidBlackMoves(ChessBoard board, Coordinate currentCoordinate) {
         ArrayList<Coordinate> returnArrayList = new ArrayList<>();
         int x = currentCoordinate.getCoordinateX();
         int y = currentCoordinate.getCoordinateY();
