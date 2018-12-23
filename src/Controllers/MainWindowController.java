@@ -131,9 +131,10 @@ public class MainWindowController {
     /**
      * Will draw the player help for the user. Note that the position of the help is dependant on the squares.
      * The currently selected square will be displayed in Blue and Possible moves in Red.
+     * The drawing of the Square will be done with {@link MainWindowController#highlightSquare(Square, Color)}.
      * <p>This method will not be executed if there is no game object associated with this controller.
      */
-    private void drawHelp() { //Todo eventual refactor, drawing and finding different methods
+    private void drawHelp() {
         if (game != null) {
             //Resetting the canvas
             GraphicsContext gc = helpLayer.getGraphicsContext2D();
@@ -143,38 +144,41 @@ public class MainWindowController {
                 //getting needed values
                 GamePieces currentGamePiece = game.getCurrentSelection().getGamePiece();
                 Coordinate currentCoordinate = game.getCurrentSelection().getCoordinate();
-
+                ChessBoard board = game.getChessBoard();
                 ArrayList<Coordinate> validMoves = currentGamePiece.getValidMoves(game.getChessBoard(), currentCoordinate);
-                double width = game.getCurrentSelection().getWidth();
-                double height = game.getCurrentSelection().getHeight();
-                double xPadding = width * 0.05;
-                double yPadding = height * 0.05;
-                double lineWidth = Math.sqrt(height * width)*0.05;
-                Square[][] squares = game.getChessBoard().getSquares();
 
                 //Drawing red square around possible moves
-                for (Square[] square : squares) {
-                    for (Square s : square) {
-                        Coordinate tempCoordinate = s.getCoordinate();
-                        for (Coordinate validMove : validMoves) {
-                            if (tempCoordinate.equals(validMove)) {
-                                double xPosition = s.getCoordinate().getCoordinateX() * width;
-                                double yPosition = s.getCoordinate().getCoordinateY() * height;
-                                gc.setStroke(Color.RED);
-                                gc.setLineWidth(lineWidth);
-                                gc.strokeRect(xPosition+xPadding, yPosition+yPadding, width-xPadding*2, height-yPadding*2);
-
-                            }
-                        }
-                    }
+                for (Coordinate validMove : validMoves) {
+                    Square tempSquare = board.getSquare(validMove);
+                    highlightSquare(tempSquare, Color.RED);
                 }
                 //Drawing blue square around own position
-                double xPosition = game.getCurrentSelection().getCoordinate().getCoordinateX() * width;
-                double yPosition = game.getCurrentSelection().getCoordinate().getCoordinateY() * height;
-                gc.setStroke(Color.BLUE);
-                gc.setLineWidth(lineWidth);
-                gc.strokeRect(xPosition+xPadding, yPosition+yPadding, width-xPadding*2, height-yPadding*2);
+                Square tempSquare = board.getSquare(currentCoordinate);
+                highlightSquare(tempSquare,Color.BLUE);
             }
+        }
+    }
+
+    /**
+     * Draws a smaller rectangle in a given Square to help the user making his move
+     * @param square The square we want to draw a help for
+     * @param color What color the help rectangle should be
+     */
+    private void highlightSquare(Square square, Color color){
+        if(game != null) {
+            GraphicsContext gc = helpLayer.getGraphicsContext2D();
+            // Getting values
+            double width = square.getWidth();
+            double height = square.getHeight();
+            double xPadding = width * 0.05; //There will b a 5% offset from the edge
+            double yPadding = height * 0.05;
+            double lineWidth = Math.sqrt(height * width)*0.05;
+            double xPosition = square.getCoordinate().getCoordinateX() * width;
+            double yPosition = square.getCoordinate().getCoordinateY() * height;
+            gc.setStroke(color);
+            gc.setLineWidth(lineWidth);
+            // Drawing the highlight
+            gc.strokeRect(xPosition+xPadding, yPosition+yPadding, width-xPadding*2, height-yPadding*2);
         }
     }
 
