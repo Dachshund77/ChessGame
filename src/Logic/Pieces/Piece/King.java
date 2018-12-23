@@ -18,7 +18,6 @@ public class King extends GamePiece {
         super(faction, UNIT_TYPE);
     }
 
-    @Override
     public ArrayList<Coordinate> getValidMoves(ChessBoard board, Coordinate currentCoordinate) { //TODO implement Castle
         ArrayList<Coordinate> returnArrayList = new ArrayList<>();
         int x = currentCoordinate.getCoordinateX();

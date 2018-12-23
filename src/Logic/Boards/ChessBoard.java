@@ -4,16 +4,33 @@ import Logic.Coordinate;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.paint.Color;
 
+/**
+ * ChessBoard Object that the game will played on.
+ * The ChessBoard is the binding link between the the {@link Square} and the {@link Logic.Games.Game}
+ * ad contains a number of helpful methods.
+ * @see Square
+ * @see Logic.Games.Game
+ */
 public class ChessBoard {
     private Canvas displayCanvas;
     private Square[][] squares;
 
+    /**
+     * Creates a new Chessboard.
+     * The references for the Canvas i needed so we know the height/width of the display Canvas.
+     * The job of drawing is the controller job.
+     * @param displayCanvas The canvas we want to display the board on.
+     */
     public ChessBoard(Canvas displayCanvas) {
         this.displayCanvas = displayCanvas;
         squares = initializeSquares();
     }
 
-    public void resizeSquares() { //TODO can be slightly rewritten
+    /**
+     * Method that will change the width and height of all Squares.
+     * This should and will be used when the canvas i resized.
+     */
+    public void resizeSquares() {
         double height = displayCanvas.getHeight() / 8;
         double width = displayCanvas.getWidth() / 8;
         for (int i = 0; i < squares.length; i++) {
@@ -24,7 +41,12 @@ public class ChessBoard {
         }
     }
 
-    private Square[][] initializeSquares() { //TODO refactor
+    /**
+     * Constructs the squares for the Board.
+     * The top Left corner of the board will have coordinate (0,0) while the bottom right will have (7,7)
+     * @return 2D Array of Squares
+     */
+    private Square[][] initializeSquares() {
         Square[][] returnArray = new Square[8][8]; //We define [x][y] axis
         double height = displayCanvas.getHeight() / 8;
         double width = displayCanvas.getWidth() / 8;
@@ -49,10 +71,21 @@ public class ChessBoard {
         return returnArray;
     }
 
+    /**
+     * Return the Array of Squares
+     * @return 2D Array of Squares
+     */
     public Square[][] getSquares() {
         return squares;
     }
 
+    /**
+     * We will get a specific Square by pixel clicked on the Canvas.
+     * This method should be used to identify the correct Square.
+     * @param xPosition The x position of the pixel clicked on the canvas.
+     * @param yPosition The y position of the pixel clicked on the canvas.
+     * @return
+     */
     public Square getSquare(double xPosition, double yPosition) {
         Square returnSquare = null;
 
@@ -74,11 +107,15 @@ public class ChessBoard {
         return returnSquare;
     }
 
+    /**
+     * Gets a specific Square by providing a {@link Coordinate} object.
+     * The Coordinate object contains a x and y value and note that the top left corner will be coordinate (0,0)
+     * @param coordinate Coordinate on the board
+     * @return The Square on the given x/y Coordinate
+     */
     public Square getSquare(Coordinate coordinate){
         int x = coordinate.getCoordinateX();
         int y = coordinate.getCoordinateY();
         return squares[x][y];
     }
-
-
 }

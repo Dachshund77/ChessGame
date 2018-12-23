@@ -18,7 +18,6 @@ public class Pawn extends GamePiece { //TODO what about promotion?
         super(faction, UNIT_TYPE);
     }
 
-    @Override
     public ArrayList<Coordinate> getValidMoves(ChessBoard board, Coordinate currentCoordinate) {
         ArrayList<Coordinate> returnArrayList;
         if (getFaction() == Faction.WHITE) {

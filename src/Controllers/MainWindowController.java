@@ -80,6 +80,7 @@ public class MainWindowController {
     /**
      * Will draw the squares of a given Board Object.
      * <p>This method will not be executed if there is no game object associated with this controller.
+     * @see Square
      */
     private void drawBoard() {
         if (game != null) {
@@ -132,7 +133,7 @@ public class MainWindowController {
      * The currently selected square will be displayed in Blue and Possible moves in Red.
      * <p>This method will not be executed if there is no game object associated with this controller.
      */
-    private void drawHelp() { //Todo eventual refactor
+    private void drawHelp() { //Todo eventual refactor, drawing and finding different methods
         if (game != null) {
             //Resetting the canvas
             GraphicsContext gc = helpLayer.getGraphicsContext2D();

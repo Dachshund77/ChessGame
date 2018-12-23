@@ -19,10 +19,10 @@ public class MainWindow extends Application {
 
         Scene scene = new Scene(root);
 
-        //The following code fill keep the canvas layer at the same size as the the parent stackPane
+        //The following code will keep the canvas layer at the same size as the the parent stackPane
         StackPane stackPaneRoot = (StackPane) scene.lookup("#stackPaneGameArea");
 
-        Canvas boardLayer = (Canvas) scene.lookup("#boardLayer");
+        Canvas boardLayer = (Canvas) scene.lookup("#boardLayer"); //lookup find the object by fx:ID
         boardLayer.widthProperty().bind(stackPaneRoot.widthProperty());
         boardLayer.heightProperty().bind(stackPaneRoot.heightProperty());
 

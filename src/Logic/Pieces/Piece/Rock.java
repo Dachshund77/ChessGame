@@ -17,7 +17,6 @@ public class Rock extends GamePiece {
         super(faction, UNIT_TYPE);
     }
 
-    @Override
     public ArrayList<Coordinate> getValidMoves(ChessBoard board, Coordinate currentCoordinate) {
         ArrayList<Coordinate> returnArrayList = new ArrayList<>();
         int x = currentCoordinate.getCoordinateX();
