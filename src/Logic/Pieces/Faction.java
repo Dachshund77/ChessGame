@@ -1,5 +1,8 @@
 package Logic.Pieces;
 
+/**
+ * Enum type for what color we work with.
+ */
 public enum Faction {
     WHITE ("White"),
     BLACK ("Black");

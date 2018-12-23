@@ -1,5 +1,8 @@
 package Logic.Pieces;
 
+/**
+ * Enum type for what kind of GamePiece we work with.
+ */
 public enum UnitType {
     PAWN ("Pawn"),
     ROCK ("Rock"),

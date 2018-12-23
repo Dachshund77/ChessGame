@@ -11,6 +11,11 @@ public abstract class GamePiece implements GamePieces{
     private UnitType unitType;
     private URL imageURL;
 
+    /**
+     * Constructs a new GamePiece
+     * @param faction The Color of the GamePiece
+     * @param unitType The Type of GamePiece
+     */
     public GamePiece(Faction faction, UnitType unitType) {
         this.faction = faction;
         this.unitType = unitType;

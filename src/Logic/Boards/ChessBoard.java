@@ -80,11 +80,11 @@ public class ChessBoard {
     }
 
     /**
-     * We will get a specific Square by pixel clicked on the Canvas.
+     * Get a specific Square by pixel clicked on the Canvas.
      * This method should be used to identify the correct Square.
      * @param xPosition The x position of the pixel clicked on the canvas.
      * @param yPosition The y position of the pixel clicked on the canvas.
-     * @return
+     * @return The Square clicked on by the User
      */
     public Square getSquare(double xPosition, double yPosition) {
         Square returnSquare = null;
@@ -108,7 +108,7 @@ public class ChessBoard {
     }
 
     /**
-     * Gets a specific Square by providing a {@link Coordinate} object.
+     * Get a specific Square by providing a {@link Coordinate} object.
      * The Coordinate object contains a x and y value and note that the top left corner will be coordinate (0,0)
      * @param coordinate Coordinate on the board
      * @return The Square on the given x/y Coordinate
