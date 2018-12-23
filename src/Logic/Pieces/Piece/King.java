@@ -128,10 +128,10 @@ public class King extends GamePiece {
         return returnArrayList;
     }
 
-    public boolean hasMoved() {
-        return hasMoved;
-    }
-
+    /**
+     * Sets if the GamePiece has moved or not
+     * @param hasMoved the state the GamePiece will take
+     */
     public void setHasMoved(boolean hasMoved) {
         this.hasMoved = hasMoved;
     }

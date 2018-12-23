@@ -1,6 +1,7 @@
 package Logic.Pieces.Piece;
 
 import Logic.Boards.ChessBoard;
+import Logic.Boards.Square;
 import Logic.Coordinate;
 import Logic.Pieces.Faction;
 import Logic.Pieces.GamePiece;
@@ -8,11 +9,15 @@ import Logic.Pieces.UnitType;
 
 import java.util.ArrayList;
 
-public class Pawn extends GamePiece { //TODO what about promotion?
+/**
+ * The Pawn Object.
+ * Note that the enPassanteCordinate is the previous moved pawn and the flag is raised and reset from {@link Logic.Games.Game#processUserInput(Square)}
+ */
+public class Pawn extends GamePiece {
 
     private static final UnitType UNIT_TYPE = UnitType.PAWN;
     private boolean hasMoved = false;
-    private Coordinate enPassanteCordinate = null;
+    private Coordinate enPassanteCordinate = null; //Note that this is the Coordinate of the previous moved pawn
 
     public Pawn(Faction faction) {
         super(faction, UNIT_TYPE);
@@ -29,7 +34,7 @@ public class Pawn extends GamePiece { //TODO what about promotion?
         return returnArrayList;
     }
 
-    private ArrayList<Coordinate> getValidWhiteMoves(ChessBoard board, Coordinate currentCoordinate) { //TODO removing en passable game Piece?
+    private ArrayList<Coordinate> getValidWhiteMoves(ChessBoard board, Coordinate currentCoordinate) {
         ArrayList<Coordinate> returnArrayList = new ArrayList<>();
         int x = currentCoordinate.getCoordinateX();
         int y = currentCoordinate.getCoordinateY();
@@ -115,14 +120,27 @@ public class Pawn extends GamePiece { //TODO what about promotion?
         return returnArrayList;
     }
 
+    /**
+     * Sets if the GamePiece has moved or not
+     * @param hasMoved the state the GamePiece will take
+     */
     public void setHasMoved(boolean hasMoved) {
         this.hasMoved = hasMoved;
     }
 
+    /**
+     * Get the enPassante Coordinate.
+     * Note that the Coordinate is the position of the Previous moved pawn that enabled the enPassante.
+     * @return a Coordinate with a Pawn piece
+     */
     public Coordinate getEnPassanteCordinate() {
         return enPassanteCordinate;
     }
 
+    /**
+     * Sets the enPassanteCoordinate field
+     * @param enPassanteCordinate the Coordinate the enemy Pawn moved to
+     */
     public void setEnPassanteCordinate(Coordinate enPassanteCordinate) {
         this.enPassanteCordinate = enPassanteCordinate;
     }

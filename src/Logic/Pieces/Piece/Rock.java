@@ -96,10 +96,18 @@ public class Rock extends GamePiece {
         return returnArrayList;
     }
 
-    public boolean hasMoved() {
+    /**
+     * Get used to find out if the GamePiece has moved
+     * @return True if the GamePiece has Moved
+     */
+    boolean hasMoved() {
         return hasMoved;
     }
 
+    /**
+     * Sets if the GamePiece has moved or not
+     * @param hasMoved the state the GamePiece will take
+     */
     public void setHasMoved(boolean hasMoved) {
         this.hasMoved = hasMoved;
     }
