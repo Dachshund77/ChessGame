@@ -16,7 +16,7 @@ public class HotSeatGame extends Game {
         getController().getContinueLock().lock();
         try {
             setUpBoard();
-            while (!super.isTerminated() && !hasGameEnded()) {
+            while (!isTerminated() && !hasGameEnded()) {
                 Platform.runLater(()-> getController().setInfoLabel(getTurnOrder().getNormalName()+" players turn!"));
                 Platform.runLater(()-> getController().updateGUI());
                 getController().getContinueCondition().await();
@@ -30,36 +30,32 @@ public class HotSeatGame extends Game {
     }
 
     public void processUserInput(Square newSelection){
-
-        if (!super.isTerminated() && !super.hasGameEnded()){ //TODO increase readbility and remove unneeded statements
-            if (super.getCurrentSelection() != null && isValidMove(newSelection)){ //While having a selection checks if clicked valid square
-                //System.out.println("Process: selected valid move ");
-                movePiece(super.getCurrentSelection().getCoordinate(),newSelection.getCoordinate());
-                super.setCurrentSelection(null);
-                if (super.getTurnOrder() == Faction.WHITE){
-                    super.setTurnOrder(Faction.BLACK);
+        if (!isTerminated() && !hasGameEnded()){
+            //While having a selection checks if clicked valid square
+            if (getCurrentSelection() != null && isValidMove(newSelection)){
+                movePiece(getCurrentSelection().getCoordinate(),newSelection.getCoordinate());
+                setCurrentSelection(null);
+                //Change who's turn it is
+                if (getTurnOrder() == Faction.WHITE){
+                    setTurnOrder(Faction.BLACK);
                 }
                 else {
-                    super.setTurnOrder(Faction.WHITE);
+                    setTurnOrder(Faction.WHITE);
                 }
             }
-            else if(newSelection.getGamePiece() == null){ //Selected a empty space
-                this.setCurrentSelection(null);
-                //System.out.println("Process: selected empty space");
+            // Same square selected
+            else if (getCurrentSelection() != null && getCurrentSelection().equals(newSelection)){
+                setCurrentSelection(null);
             }
-            else if(newSelection.equals(super.getCurrentSelection())){ //Selected same space
-                super.setCurrentSelection(null);
-                //System.out.println("Process: selected same space");
+            //Selected an friendly Piece that is not the same
+            else if(newSelection.getGamePiece() != null && newSelection.getGamePiece().getFaction().equals(getTurnOrder())){
+                setCurrentSelection(newSelection);
             }
-            else if (newSelection.getGamePiece().getFaction().equals(super.getTurnOrder())){ //Selected an friendly Piece
-                super.setCurrentSelection(newSelection);
-                //System.out.println("Process: selected friendly Piece");
-            }
+            //All other cases
             else {
-                //System.out.println("Process: set selection to null");
-                super.setCurrentSelection(null);
+                setCurrentSelection(null);
             }
         }
-        super.getController().updateGUI();
+        getController().updateGUI();
     }
 }

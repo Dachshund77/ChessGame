@@ -7,10 +7,14 @@ import Logic.Pieces.*;
 import Logic.Pieces.Piece.*;
 import Controllers.MainWindowController;
 import javafx.application.Platform;
-
 import java.util.ArrayList;
 
-public abstract class Game implements Runnable, Games{ //TODO might be sensible to make own interface
+/**
+ * Abstract class that contains standard methods that will most likely used for all Game children.
+ * It is here where we move piece, check for game end or if a move is valid.
+ *
+ */
+public abstract class Game implements Runnable, Games{
 
     private volatile boolean terminated = false;
 
@@ -26,6 +30,9 @@ public abstract class Game implements Runnable, Games{ //TODO might be sensible 
         this.chessBoard = new ChessBoard(controller.getBoardLayer());
     }
 
+    /**
+     * Will create the starting setup for all gamePieces.
+     */
     void setUpBoard() {
         if (!terminated) {
             //Black Pieces
@@ -56,6 +63,13 @@ public abstract class Game implements Runnable, Games{ //TODO might be sensible 
         }
     }
 
+    /**
+     * Inspects the board to find out if the game has ended.
+     * The games has ended if a black or white king can not be found.
+     * In case of a game ending this method will set the winner field and
+     * also prompt the user about the game end.
+     * Note that this method does not detect a check mate situation
+     */
     void checkForGameEnd() {
         if (!terminated) {
             Square[][] squares = chessBoard.getSquares();
@@ -230,19 +244,15 @@ public abstract class Game implements Runnable, Games{ //TODO might be sensible 
         this.terminated = terminated;
     }
 
-    public boolean hasGameEnded() {
+    boolean hasGameEnded() {
         return hasGameEnded;
     }
 
-    public Faction getWinner() {
-        return winner;
-    }
-
-    public Faction getTurnOrder() {
+    Faction getTurnOrder() {
         return turnOrder;
     }
 
-    public boolean isTerminated() {
+    boolean isTerminated() {
         return terminated;
     }
 
@@ -254,11 +264,11 @@ public abstract class Game implements Runnable, Games{ //TODO might be sensible 
         return currentSelection;
     }
 
-    public void setCurrentSelection(Square currentSelection) {
+    void setCurrentSelection(Square currentSelection) {
         this.currentSelection = currentSelection;
     }
 
-    public void setTurnOrder(Faction turnOrder) {
+    void setTurnOrder(Faction turnOrder) {
         this.turnOrder = turnOrder;
     }
 }
