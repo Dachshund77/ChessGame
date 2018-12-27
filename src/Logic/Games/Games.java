@@ -33,4 +33,5 @@ public interface Games {
      * @param newSelection The Square that was clicked on by tge user
      */
     void processUserInput(Square newSelection);
+
 }

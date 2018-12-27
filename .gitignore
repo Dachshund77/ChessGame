@@ -2,5 +2,4 @@
 .idea/
 BoardGame.iml
 out/
-src/resources/
 .gitignore

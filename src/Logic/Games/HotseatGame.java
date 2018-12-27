@@ -5,12 +5,18 @@ import Logic.Pieces.Faction;
 import Controllers.MainWindowController;
 import javafx.application.Platform;
 
+/**
+ * ChessGame between to Human players the same machine.
+ */
 public class HotSeatGame extends Game {
 
     public HotSeatGame(MainWindowController controller) {
         super(controller);
     }
 
+    /**
+     * The run method will keep track of the basic gameLoop.
+     */
     @Override
     public void run() {
         getController().getContinueLock().lock();
@@ -33,7 +39,7 @@ public class HotSeatGame extends Game {
         if (!isTerminated() && !hasGameEnded()){
             //While having a selection checks if clicked valid square
             if (getCurrentSelection() != null && isValidMove(newSelection)){
-                movePiece(getCurrentSelection().getCoordinate(),newSelection.getCoordinate());
+                processTurn(getCurrentSelection().getCoordinate(),newSelection.getCoordinate());
                 setCurrentSelection(null);
                 //Change who's turn it is
                 if (getTurnOrder() == Faction.WHITE){
